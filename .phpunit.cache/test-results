@@ -1,0 +1,1 @@
+{"version":1,"defects":{"RandomTest::testSample":7,"QuizAppTest::testGetQuestionsReturnsArray":8,"QuizAppTest::testHasUserTakenQuiz":8},"times":{"RandomTest::testSample":0.008,"QuizAppTest::testGetQuestionsReturnsArray":0.002,"QuizAppTest::testHasUserTakenQuiz":0.021}}

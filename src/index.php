@@ -7,9 +7,10 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['user_id'];//$_SESSION is a global array used to store session data.
+var_dump($_SESSION);
 $quiz_taken = has_user_taken_quiz($conn, $user_id);
-
+//var_dump($GLOBALS);
 if ($quiz_taken) {
     echo "<h1>You have already taken the quiz!</h1>";
     echo '<a href="logout.php">Logout</a>';
@@ -21,9 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $questions = get_questions($conn);
 
     foreach ($_POST['answers'] as $question_id => $answer) {
-        $query = "SELECT correct_answer FROM questions WHERE id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $question_id);
+        var_dump($_POST);
+        $query = "SELECT correct_answer FROM questions WHERE id = ?";//?is for attribure or info that we dont have to execute 
+        $stmt = $conn->prepare($query);                              //wwe can use bind_parameter to put the info in ?
+        echo "fff";
+        var_dump($stmt);
+        $stmt->bind_param("i", $question_id);//flow :- prepare queery->bind parameter->execute>bindresultto variable >fetch >close
         $stmt->execute();
         $stmt->bind_result($correct_answer);
         $stmt->fetch();
@@ -58,6 +62,7 @@ $questions = get_questions($conn);
         <?php foreach ($questions as $question): ?>
             <div>
                 <p><?php echo $question['question_text']; ?></p>
+                <?php var_dump($question);?>
                 <label><input type="radio" name="answers[<?php echo $question['id']; ?>]" value="A" required> <?php echo $question['option_a']; ?></label><br>
                 <label><input type="radio" name="answers[<?php echo $question['id']; ?>]" value="B"> <?php echo $question['option_b']; ?></label><br>
                 <label><input type="radio" name="answers[<?php echo $question['id']; ?>]" value="C"> <?php echo $question['option_c']; ?></label><br>
